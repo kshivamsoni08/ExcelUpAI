@@ -1,0 +1,29 @@
+# Next.js
+.next/
+out/
+node_modules/
+
+# Environment files
+.env*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+*.pem
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+backend_dev.log
+api_log.txt
+seed_log.txt
+backend_log.txt
+hr_token.txt
+officer_token.txt
+priya_token.txt
+frontend_serve.log
