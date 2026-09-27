@@ -1,4 +1,18 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
+export function getApiBaseUrl(): string {
+  const env = (process.env.NEXT_PUBLIC_API_URL || "").trim();
+  if (typeof window !== "undefined") {
+    const isLocalhost =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+    // If running in browser on Vercel or any live domain, never allow localhost/127.0.0.1 URL
+    if (!isLocalhost && (env.includes("localhost") || env.includes("127.0.0.1") || env.includes("0.0.0.0"))) {
+      return "";
+    }
+  }
+  return env;
+}
+
+export const API_URL = getApiBaseUrl();
 
 const TOKEN_KEY = "excelupai_token";
 const USER_KEY = "excelupai_user";
@@ -67,27 +81,37 @@ export async function api<T = unknown>(
   if (token) headers["Authorization"] = `Bearer ${token}`;
   if (!options.formData) headers["Content-Type"] = "application/json";
 
+  const baseUrl = getApiBaseUrl();
   const cleanPath =
     path.startsWith("/api/") || path === "/api"
       ? path
       : `/api${path.startsWith("/") ? path : `/${path}`}`;
 
-  const res = await fetch(`${API_URL}${cleanPath}`, {
-    method: options.method ?? "GET",
-    headers,
-    body: options.formData ?? (options.body !== undefined ? JSON.stringify(options.body) : undefined),
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${baseUrl}${cleanPath}`, {
+      method: options.method ?? "GET",
+      headers,
+      body: options.formData ?? (options.body !== undefined ? JSON.stringify(options.body) : undefined),
+    });
+  } catch (err: any) {
+    throw new ApiError(0, err?.message || "Network request failed. Please check your connection.");
+  }
 
   if (!res.ok) {
-    let detail = res.statusText;
+    let detail = "";
     try {
       const j = await res.json();
       detail = typeof j.detail === "string" ? j.detail : JSON.stringify(j.detail ?? j);
     } catch {
-      /* keep statusText */
+      detail = res.statusText;
+    }
+    if (!detail) {
+      detail = res.status === 401 ? "Invalid email or password" : `Request failed (HTTP ${res.status})`;
     }
     if (res.status === 401) clearSession();
     throw new ApiError(res.status, detail);
   }
+
   return res.json() as Promise<T>;
 }
