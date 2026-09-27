@@ -6,9 +6,16 @@ import { Sparkles, X } from "lucide-react";
 import { api } from "@/lib/api";
 
 type AppItem = {
-  id: number; opp_id?: number; status: string; score: number; feedback: any;
-  opportunity: { id: number; title: string; company: string; kind: string; location: string } | null;
-  events: { type: string; ts: string }[];
+  id: number;
+  opp_id?: number;
+  status: string;
+  score?: number;
+  title?: string;
+  company?: string;
+  created_at?: string;
+  feedback?: any;
+  opportunity?: { id: number; title: string; company: string; kind: string; location: string } | null;
+  events?: { type: string; ts: string }[];
 };
 
 const FLOW = ["applied", "viewed", "shortlisted", "interviewed", "offered", "accepted"];
@@ -37,8 +44,8 @@ export default function ApplicationsPage() {
           <div key={a.id} className="card p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <b className="text-primary-950">{a.opportunity?.title ?? `Posting #${a.opp_id}`}</b>
-                <div className="text-sm text-stone-500">{a.opportunity?.company} · {a.opportunity?.location}</div>
+                <b className="text-primary-950">{a.opportunity?.title ?? a.title ?? `Posting #${a.opp_id ?? a.id}`}</b>
+                <div className="text-sm text-stone-500">{a.opportunity?.company ?? a.company ?? "ExcelUp Partner"}{a.opportunity?.location ? ` · ${a.opportunity.location}` : ""}</div>
               </div>
               <div className="flex items-center gap-2">
                 <span className={`badge ${a.status === "rejected" ? "badge-red" : stageIdx(a.status) >= 4 ? "badge-green" : "badge-amber"}`}>
@@ -72,7 +79,7 @@ export default function ApplicationsPage() {
             </div>
 
             <div className="mt-3 text-xs text-stone-400">
-              {a.events.length} events · last update {new Date(a.events[a.events.length - 1]?.ts ?? a.events[0]?.ts ?? Date.now()).toLocaleString()}
+              {a.events?.length ?? 1} events · last update {new Date(a.events?.[(a.events?.length ?? 1) - 1]?.ts ?? a.events?.[0]?.ts ?? a.created_at ?? Date.now()).toLocaleString()}
             </div>
           </div>
         ))}

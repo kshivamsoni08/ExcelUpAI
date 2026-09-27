@@ -731,14 +731,25 @@ export async function POST(
   // --- OPPORTUNITIES APPLY ---
   if (slug[0] === "opportunities" && slug[1] && slug[2] === "apply") {
     const oppId = Number(slug[1]);
+    const now = new Date().toISOString();
     store.applications.unshift({
       id: store.applications.length + 1,
       opp_id: oppId,
-      title: "Opportunity Application",
-      company: "ExcelUp Partner",
-      kind: "job",
+      title: oppId === 101 ? "Solar PV O&M Technician" : oppId === 102 ? "EV Service Technician" : "Solar PV Installer",
+      company: oppId === 101 ? "SunRay Energy" : oppId === 102 ? "EV Motors Maharashtra" : "ExcelUp Partner",
+      kind: oppId === 102 ? "internship" : "job",
       status: "applied",
-      created_at: new Date().toISOString(),
+      score: 85,
+      created_at: now,
+      opportunity: {
+        id: oppId,
+        title: oppId === 101 ? "Solar PV O&M Technician" : oppId === 102 ? "EV Service Technician" : "Solar PV Installer",
+        company: oppId === 101 ? "SunRay Energy" : oppId === 102 ? "EV Motors Maharashtra" : "ExcelUp Partner",
+        kind: oppId === 102 ? "internship" : "job",
+        location: oppId === 102 ? "Nashik" : "Pune",
+      },
+      events: [{ type: "applied", ts: now }],
+      feedback: null,
     });
     return NextResponse.json({ success: true, status: "applied" });
   }
