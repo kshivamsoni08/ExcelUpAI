@@ -78,14 +78,14 @@ export default function GenomePage() {
             {(data?.skills ?? []).map((s) => (
               <div key={s.skill_id} className={`rounded-lg border p-3 ${s.faded ? "border-dashed border-stone-300 opacity-70" : "border-stone-200"}`}>
                 <div className="flex items-center justify-between">
-                  <b className="text-sm text-stone-800">{s.name}</b>
+                  <b className="text-sm text-stone-800">{s.name || (s as any).skill}</b>
                   {s.source === "declared" ? <span className="badge-gray">unverified</span> :
-                    <span className="badge-green">✓ {s.source}</span>}
+                    <span className="badge-green">✓ {s.source || "verified"}</span>}
                 </div>
                 <div className="mt-1 grid grid-cols-3 gap-2 text-xs text-stone-500">
-                  <span>floor <b className="text-primary-800">{s.verified_floor.toFixed(2)}</b></span>
-                  <span>ceiling <b className="text-saffron-600">{s.potential_ceiling.toFixed(2)}</b></span>
-                  <span>{s.months_stale < 1 ? "fresh" : `${s.months_stale.toFixed(0)} mo old`}</span>
+                  <span>floor <b className="text-primary-800">{(s.verified_floor ?? 0).toFixed(2)}</b></span>
+                  <span>ceiling <b className="text-saffron-600">{(s.potential_ceiling ?? 0).toFixed(2)}</b></span>
+                  <span>{typeof s.months_stale === "number" ? (s.months_stale < 1 ? "fresh" : `${s.months_stale.toFixed(0)} mo old`) : "fresh"}</span>
                 </div>
               </div>
             ))}

@@ -4,16 +4,18 @@ import { useMemo, useState } from "react";
 
 export type GenomeSkill = {
   skill_id: number;
-  name: string;
-  domain: string;
-  mu_effective: number;
-  verified_floor: number;
-  potential_ceiling: number;
-  source: string;
-  is_verified: boolean;
-  months_stale: number;
-  faded: boolean;
-  last_evidence_at: string;
+  name?: string;
+  skill?: string;
+  domain?: string;
+  mu_effective?: number;
+  verified_floor?: number;
+  potential_ceiling?: number;
+  source?: string;
+  is_verified?: boolean;
+  months_stale?: number;
+  faded?: boolean;
+  last_evidence_at?: string;
+  decay_status?: string;
 };
 
 const SIZE = 520;
@@ -53,11 +55,11 @@ export default function SkillGenome({
   );
 
   const floorPts = skills.map((s, i) => {
-    const r = (Math.max(0, s.verified_floor) / LEVELS) * RMAX;
+    const r = (Math.max(0, s.verified_floor ?? 0) / LEVELS) * RMAX;
     return polar(angles[i], r);
   });
   const ceilPts = skills.map((s, i) => {
-    const r = (Math.min(LEVELS, s.potential_ceiling) / LEVELS) * RMAX;
+    const r = (Math.min(LEVELS, s.potential_ceiling ?? 0) / LEVELS) * RMAX;
     return polar(angles[i], r);
   });
 
@@ -128,7 +130,7 @@ export default function SkillGenome({
                 textAnchor={Math.abs(lx - C) < 20 ? "middle" : lx > C ? "start" : "end"}
                 dominantBaseline="middle"
                 className={s.faded ? "fill-stone-400 italic" : "fill-stone-700"}>
-                {s.name}
+                {s.name || s.skill || `Skill #${s.skill_id}`}
               </text>
             </g>
           );
@@ -143,18 +145,18 @@ export default function SkillGenome({
           style={{ left: `calc(50% + ${hover.x}px - 112px)`, top: `calc(50% + ${hover.y}px - 96px)` }}
         >
           <div className="mb-1 flex items-center justify-between">
-            <span className="font-semibold text-stone-800">{hover.skill.name}</span>
+            <span className="font-semibold text-stone-800">{hover.skill.name || hover.skill.skill || `Skill #${hover.skill.skill_id}`}</span>
             {hover.skill.faded && <span className="badge-amber">fading</span>}
           </div>
           <div className="space-y-0.5 text-stone-600">
-            <div>Verified floor: <b className="text-primary-800">{hover.skill.verified_floor.toFixed(2)}</b></div>
-            <div>Potential ceiling: <b className="text-saffron-600">{hover.skill.potential_ceiling.toFixed(2)}</b></div>
-            <div>Effective level μ: {hover.skill.mu_effective.toFixed(2)}</div>
-            <div>Source: {SOURCE_LABEL[hover.skill.source] ?? hover.skill.source}
+            <div>Verified floor: <b className="text-primary-800">{(hover.skill.verified_floor ?? 0).toFixed(2)}</b></div>
+            <div>Potential ceiling: <b className="text-saffron-600">{(hover.skill.potential_ceiling ?? 0).toFixed(2)}</b></div>
+            <div>Effective level μ: {(hover.skill.mu_effective ?? hover.skill.verified_floor ?? 0).toFixed(2)}</div>
+            <div>Source: {SOURCE_LABEL[hover.skill.source ?? ""] ?? hover.skill.source ?? "verified"}
               {!hover.skill.is_verified && <span className="badge-gray ml-1">unverified</span>}
             </div>
-            <div>Last verified: {new Date(hover.skill.last_evidence_at).toLocaleDateString()}
-              {hover.skill.months_stale >= 1 && ` (${hover.skill.months_stale.toFixed(0)} mo ago)`}
+            <div>Last verified: {hover.skill.last_evidence_at ? new Date(hover.skill.last_evidence_at).toLocaleDateString() : "Recent"}
+              {typeof hover.skill.months_stale === "number" && hover.skill.months_stale >= 1 && ` (${hover.skill.months_stale.toFixed(0)} mo ago)`}
             </div>
           </div>
         </div>

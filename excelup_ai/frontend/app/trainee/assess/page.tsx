@@ -117,7 +117,7 @@ export default function AssessPage() {
                 )}
               </div>
               <div className="mt-1 flex justify-between text-xs text-stone-500">
-                <span>θ = {current.theta.toFixed(2)}</span>
+                <span>θ = {(current.theta ?? 0).toFixed(2)}</span>
                 {current.served && <span>this item: <b>{current.served.difficulty_label}</b> (b = {current.served.difficulty_b})</span>}
               </div>
             </div>
@@ -137,7 +137,7 @@ export default function AssessPage() {
             <div className="card border-primary-200 bg-primary-50 p-6 text-center">
               <CheckCircle2 className="mx-auto h-8 w-8 text-primary-700" />
               <h3 className="mt-2 text-lg font-semibold text-primary-950">
-                Estimated level: {current.level_estimate.toFixed(2)} / 5
+                Estimated level: {(current.level_estimate ?? 0).toFixed(2)} / 5
               </h3>
               <p className="text-sm text-primary-800">Your genome has been updated live - check My Skill Genome.</p>
               <div className="mt-4 flex justify-center gap-2">
