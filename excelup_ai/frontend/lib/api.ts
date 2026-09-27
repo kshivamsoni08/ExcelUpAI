@@ -1,15 +1,27 @@
 export function getApiBaseUrl(): string {
-  const env = (process.env.NEXT_PUBLIC_API_URL || "").trim();
+  let env = (process.env.NEXT_PUBLIC_API_URL || "").trim();
   if (typeof window !== "undefined") {
+    const hostname = window.location.hostname;
     const isLocalhost =
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1";
+      hostname === "localhost" ||
+      hostname === "127.0.0.1";
+
     // If running in browser on Vercel or any live domain, never allow localhost/127.0.0.1 URL
     if (!isLocalhost && (env.includes("localhost") || env.includes("127.0.0.1") || env.includes("0.0.0.0"))) {
       return "";
     }
+
+    // If env points to the same hostname or host (e.g. excel-up-ai.vercel.app), use relative path
+    if (env && (env.includes(hostname) || (window.location.host && env.includes(window.location.host)))) {
+      return "";
+    }
+
+    // If env is set without http:// or https://, a bare domain will be treated as a relative path by the browser
+    if (env && !env.startsWith("http://") && !env.startsWith("https://")) {
+      return "";
+    }
   }
-  return env;
+  return env.replace(/\/+$/, "");
 }
 
 export const API_URL = getApiBaseUrl();

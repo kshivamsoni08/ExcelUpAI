@@ -201,13 +201,28 @@ export async function GET(
         { id: 105, name: "Suresh P.", pri: 42.1, target_role: "Solar PV Installer" },
         { id: 108, name: "Kavita M.", pri: 48.0, target_role: "Solar Technician" },
       ],
+      pri_histogram: [
+        { bin: "0-40", count: 2 },
+        { bin: "40-60", count: 6 },
+        { bin: "60-80", count: 18 },
+        { bin: "80-100", count: 21 },
+      ],
       pri_formula: "PRI = 0.40 x SkillFloor + 0.30 x GauntletProof + 0.30 x Attendance",
     });
   }
 
   if (path === "provider/growth") {
     return NextResponse.json({
-      months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"],
+      formula: "Cohort mean proficiency μ per month across verified skill rubrics (append-only history).",
+      series: {
+        "Solar PV Installation": { "2025-10": 2.1, "2025-11": 2.7, "2025-12": 3.2, "2026-01": 3.7, "2026-02": 4.1 },
+        "Solar Site Survey": { "2025-10": 1.9, "2025-11": 2.4, "2025-12": 3.0, "2026-01": 3.5, "2026-02": 4.0 },
+        "Solar Inverter Basics": { "2025-10": 1.7, "2025-11": 2.2, "2025-12": 2.8, "2026-01": 3.3, "2026-02": 3.8 },
+        "PV System Design": { "2025-10": 1.4, "2025-11": 1.9, "2025-12": 2.5, "2026-01": 3.0, "2026-02": 3.4 },
+        "Workplace Communication": { "2025-10": 3.0, "2025-11": 3.3, "2025-12": 3.6, "2026-01": 3.9, "2026-02": 4.2 },
+        "Battery Diagnostics": { "2025-10": 1.2, "2025-11": 1.6, "2025-12": 2.1, "2026-01": 2.6, "2026-02": 3.1 },
+      },
+      months: ["2025-10", "2025-11", "2025-12", "2026-01", "2026-02"],
       placement_rate: [72, 74, 76, 79, 82, 84, 85, 87, 87.2],
       median_wage: [14000, 14200, 14500, 15000, 15400, 16000, 16500, 17200, 17900],
     });
@@ -215,7 +230,7 @@ export async function GET(
 
   if (path === "provider/pri") {
     return NextResponse.json({
-      formula: "Placement Readiness Index (PRI) evaluates verified proficiency + challenge completion + attendance.",
+      formula: "JRI = 0.35×essential_coverage + 0.25×portfolio_depth + 0.15×freshness + 0.15×SJT + 0.10×interview_readiness",
       histogram: [
         { bin: "0-40", count: 2 },
         { bin: "40-60", count: 6 },
@@ -223,9 +238,86 @@ export async function GET(
         { bin: "80-100", count: 21 },
       ],
       trainees: [
-        { id: 101, name: "Priya Patil", pri: 92.4, target_role: "Solar PV Installation Technician", status: "ready" },
-        { id: 103, name: "Amit Shinde", pri: 84.1, target_role: "Solar Inverter Technician", status: "ready" },
-        { id: 104, name: "Sneha Pawar", pri: 79.5, target_role: "PV System Designer", status: "ready" },
+        {
+          id: 101,
+          name: "Priya Patil",
+          pri: 92.4,
+          target_role: "Solar PV Installation Technician",
+          status: "ready",
+          components: { coverage: 95, portfolio_depth: 92, freshness: 96, sjt: 88, interview_readiness: 90 },
+        },
+        {
+          id: 102,
+          name: "Rahul Verma",
+          pri: 88.5,
+          target_role: "Solar Site Engineer",
+          status: "ready",
+          components: { coverage: 90, portfolio_depth: 88, freshness: 92, sjt: 85, interview_readiness: 86 },
+        },
+        {
+          id: 103,
+          name: "Amit Shinde",
+          pri: 84.1,
+          target_role: "Solar Inverter Technician",
+          status: "ready",
+          components: { coverage: 85, portfolio_depth: 82, freshness: 90, sjt: 82, interview_readiness: 80 },
+        },
+        {
+          id: 104,
+          name: "Sneha Pawar",
+          pri: 79.5,
+          target_role: "PV System Designer",
+          status: "ready",
+          components: { coverage: 82, portfolio_depth: 78, freshness: 85, sjt: 76, interview_readiness: 74 },
+        },
+        {
+          id: 105,
+          name: "Suresh P.",
+          pri: 42.1,
+          target_role: "Solar PV Installer",
+          status: "needs_support",
+          components: { coverage: 45, portfolio_depth: 40, freshness: 50, sjt: 38, interview_readiness: 35 },
+        },
+        {
+          id: 106,
+          name: "Anil Jadhav",
+          pri: 71.0,
+          target_role: "Renewable Energy Technician",
+          status: "in_training",
+          components: { coverage: 72, portfolio_depth: 70, freshness: 75, sjt: 68, interview_readiness: 70 },
+        },
+        {
+          id: 107,
+          name: "Pooja Deshmukh",
+          pri: 68.4,
+          target_role: "Grid Synchronization Assistant",
+          status: "in_training",
+          components: { coverage: 70, portfolio_depth: 66, freshness: 72, sjt: 65, interview_readiness: 68 },
+        },
+        {
+          id: 108,
+          name: "Kavita M.",
+          pri: 48.0,
+          target_role: "Solar Technician",
+          status: "needs_support",
+          components: { coverage: 50, portfolio_depth: 46, freshness: 55, sjt: 44, interview_readiness: 42 },
+        },
+        {
+          id: 109,
+          name: "Vikas Kadam",
+          pri: 82.3,
+          target_role: "Solar PV Installation Technician",
+          status: "ready",
+          components: { coverage: 84, portfolio_depth: 80, freshness: 88, sjt: 80, interview_readiness: 78 },
+        },
+        {
+          id: 110,
+          name: "Manisha Rane",
+          pri: 76.8,
+          target_role: "PV System Designer",
+          status: "ready",
+          components: { coverage: 78, portfolio_depth: 75, freshness: 80, sjt: 74, interview_readiness: 75 },
+        },
       ],
     });
   }
@@ -420,6 +512,52 @@ export async function GET(
         difficulty_label: "moderate",
         skill_type: "Vocational Diagnostic",
       },
+    });
+  }
+
+  // --- RESUME CLAIMED VS VERIFIED ---
+  if (slug[0] === "resume" && slug[1] === "claimed-vs-verified" && slug[2]) {
+    return NextResponse.json({
+      claimed_score: 84,
+      verified_score: 62,
+      delta: 22,
+      eligible_claimed: true,
+      declared_skill_ids: [15, 16],
+      per_skill: [
+        {
+          skill: "Solar PV Installation",
+          required: 4.0,
+          claimed_level: 4.0,
+          verified_level: 4.2,
+          claimed_credit: 1.0,
+          verified_credit: 1.0,
+          is_declared_only: false,
+          verified: true,
+          bridge_courses: [],
+        },
+        {
+          skill: "Battery Diagnostics",
+          required: 3.5,
+          claimed_level: 3.5,
+          verified_level: 2.1,
+          claimed_credit: 1.0,
+          verified_credit: 0.6,
+          is_declared_only: true,
+          verified: false,
+          bridge_courses: ["EV Traction Battery Diagnostics Mastery"],
+        },
+        {
+          skill: "Solar Inverter Basics",
+          required: 3.5,
+          claimed_level: 4.0,
+          verified_level: 3.6,
+          claimed_credit: 1.0,
+          verified_credit: 1.0,
+          is_declared_only: false,
+          verified: true,
+          bridge_courses: [],
+        },
+      ],
     });
   }
 
