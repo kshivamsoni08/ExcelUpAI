@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "Longitudinal skilling-outcomes and impact-measurement platform: consent-based outcome registry, one-tap follow-ups, employer validation, outcome-adjusted quality analytics.",
   manifest: "/manifest.webmanifest",
-  icons: { icon: "/icon.svg" },
+  icons: { icon: "/logo.png", apple: "/logo.png" },
 };
 
 export const viewport: Viewport = {

@@ -1,7 +1,7 @@
 /* ExcelUp AI service worker - cached shell only.
    API calls always go to the network (data must be live). */
-const CACHE = "skillsetu-shell-v1";
-const SHELL = ["/", "/login", "/manifest.webmanifest", "/icon.svg"];
+const CACHE = "excelup-shell-v2";
+const SHELL = ["/", "/login", "/manifest.webmanifest", "/icon.svg", "/logo.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

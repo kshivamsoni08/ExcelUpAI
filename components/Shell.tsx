@@ -146,8 +146,8 @@ export default function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen">
       <aside className="fixed inset-y-0 left-0 w-60 border-r border-stone-200 bg-white">
-        <div className="flex h-14 items-center gap-2 border-b border-stone-100 px-5">
-          <Dna className="h-6 w-6 text-primary-800" />
+        <div className="flex h-14 items-center gap-2.5 border-b border-stone-100 px-5">
+          <img src="/logo.png" alt="ExcelUp AI" className="h-7 w-7 object-contain" />
           <span className="font-semibold tracking-tight text-primary-950">{nav.brand}</span>
         </div>
         <nav className="space-y-0.5 p-3">

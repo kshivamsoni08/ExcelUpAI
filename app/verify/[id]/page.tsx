@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { BadgeCheck, ShieldCheck, ShieldX, Fingerprint } from "lucide-react";
+import { BadgeCheck, ShieldCheck, ShieldX } from "lucide-react";
 import { api } from "@/lib/api";
 
 type VerifyResult = {
@@ -28,8 +28,8 @@ export default function VerifyPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-stone-100 p-6">
       <div className="w-full max-w-xl">
-        <div className="mb-4 flex items-center gap-2">
-          <Fingerprint className="h-6 w-6 text-primary-800" />
+        <div className="mb-4 flex items-center gap-2.5">
+          <img src="/logo.png" alt="ExcelUp AI" className="h-7 w-7 object-contain" />
           <span className="text-lg font-bold text-primary-950">ExcelUp AI Credential Verification</span>
         </div>
 

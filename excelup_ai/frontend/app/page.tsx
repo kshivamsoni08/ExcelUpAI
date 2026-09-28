@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Landmark } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const CONCEPTS = [
   {
@@ -33,8 +33,8 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-white">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <div className="flex items-center gap-2">
-          <Landmark className="h-7 w-7 text-primary-800" />
+        <div className="flex items-center gap-2.5">
+          <img src="/logo.png" alt="ExcelUp AI" className="h-8 w-8 object-contain" />
           <span className="text-lg font-bold tracking-tight text-primary-950">ExcelUp AI</span>
         </div>
         <Link href="/login" className="btn-primary">Sign in</Link>
