@@ -21,10 +21,10 @@ export default function GrowthPage() {
 
   const chartData = useMemo(() => {
     const months = new Set<string>();
-    shown.forEach((s) => Object.keys(data?.series[s] ?? {}).forEach((m) => months.add(m)));
+    shown.forEach((s) => Object.keys(data?.series?.[s] ?? {}).forEach((m) => months.add(m)));
     return [...months].sort().map((m) => {
       const row: Record<string, number | string> = { month: m };
-      shown.forEach((s) => { row[s] = data?.series[s]?.[m] ?? 0; });
+      shown.forEach((s) => { row[s] = data?.series?.[s]?.[m] ?? 0; });
       return row;
     });
   }, [data, shown]);

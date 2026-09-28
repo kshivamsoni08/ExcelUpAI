@@ -75,7 +75,7 @@ export default function CompanyHome() {
         <div className="card p-5">
           <div className="mb-3 flex items-center justify-between">
             <h3 className="font-semibold text-primary-950">
-              {cands?.title} - candidates <span className="text-stone-400">({cands?.candidates.length ?? 0})</span>
+              {cands?.title} - candidates <span className="text-stone-400">({cands?.candidates?.length ?? 0})</span>
             </h3>
             <button className="btn-saffron" disabled={!checked.size || shortlist.isPending}
               onClick={() => shortlist.mutate([...checked])}>
@@ -139,7 +139,7 @@ export default function CompanyHome() {
         <div className="space-y-2">
           {(pipeline ?? []).slice(0, 15).map((a) => (
             <div key={a.id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-stone-100 px-3 py-2 text-sm">
-              <span><b>{a.candidate_name}</b> · {a.opp_title}</span>
+              <span><b>{a.candidate_name ?? a.candidate_ref ?? "Candidate"}</b> · {a.opp_title ?? a.title ?? "Opportunity"}</span>
               <span className="flex items-center gap-2">
                 <span className="text-xs text-stone-400">score {a.score}</span>
                 <span className={a.status === "accepted" ? "badge-green" : a.status === "rejected" ? "badge-red" : "badge-amber"}>{a.status}</span>

@@ -55,7 +55,7 @@ export default function VerifyPage() {
                   <div className={`text-lg font-bold ${data.authentic ? "text-primary-900" : "text-red-800"}`}>
                     {data.authentic ? "Authentic - signature & Merkle proof valid" : "TAMPERED - verification failed"}
                   </div>
-                  <div className="text-xs text-stone-500">Issued {new Date(data.issued_at!).toLocaleString()}</div>
+                  <div className="text-xs text-stone-500">Issued {data.issued_at ? new Date(data.issued_at).toLocaleString() : "recently"}</div>
                 </div>
               </div>
             </div>

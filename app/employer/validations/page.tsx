@@ -74,7 +74,7 @@ export default function ValidationsPage() {
                 </div>
                 <div className="mt-0.5 text-xs text-stone-500">
                   Trainee <b>{v.identity_revealed ? v.trainee_name : v.trainee_ref}</b>
-                  {" "}· reported via {v.source.replace(/_/g, " ")}
+                  {" "}· reported via {(v.source ?? "self_report").replace(/_/g, " ")}
                 </div>
               </div>
               {v.validation_status === "validated" ? (

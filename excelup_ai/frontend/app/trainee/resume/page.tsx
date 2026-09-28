@@ -104,7 +104,7 @@ export default function ResumePage() {
               </div>
             </div>
             <div className="space-y-2">
-              {cv.per_skill.map((p) => (
+              {(cv.per_skill ?? []).map((p) => (
                 <div key={p.skill} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-stone-100 p-3 text-sm">
                   <div>
                     <b>{p.skill}</b> <span className="text-stone-400">vs {p.required} required</span>

@@ -12,6 +12,8 @@ const DEMO_ACCOUNTS = [
   { label: "Employer - SunRay Energy", email: "hr@sunray.demo" },
   { label: "Provider - ITI Pune", email: "principal@itipune.demo" },
   { label: "Provider - ITI Nashik", email: "principal@itinashik.demo" },
+  { label: "Trainer / Faculty - Prof. Kulkarni", email: "trainer@demo.faculty" },
+  { label: "System Admin - Governance", email: "admin@excelupai.demo" },
 ];
 
 const HOME: Record<string, string> = {

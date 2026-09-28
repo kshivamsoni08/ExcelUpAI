@@ -38,8 +38,8 @@ export default function ChallengeReviewPage() {
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="badge-gray">{s.candidate_ref}</span>
-                  <b className="text-primary-950">{s.gauntlet_title}</b>
+                  <span className="badge-gray">{s.candidate_ref || "TRN-CANDIDATE"}</span>
+                  <b className="text-primary-950">{s.gauntlet_title || (s as any).title || "Skill Challenge"}</b>
                 </div>
                 <div className="mt-1 text-sm text-stone-600">{s.writeup}</div>
                 <a href={s.submission_url} target="_blank" className="text-xs text-primary-700 underline">{s.submission_url}</a>

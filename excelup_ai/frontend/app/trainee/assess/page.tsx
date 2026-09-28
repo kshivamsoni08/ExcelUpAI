@@ -128,7 +128,7 @@ export default function AssessPage() {
               </div>
               <div className="h-2 rounded-full bg-stone-100">
                 <div className="h-2 rounded-full bg-saffron-500 transition-all"
-                  style={{ width: `${Math.min(100, (current.sem / 1.0) * 100)}%` }} />
+                  style={{ width: `${Math.min(100, ((current.sem ?? 0.5) / 1.0) * 100)}%` }} />
               </div>
             </div>
           </div>
@@ -148,7 +148,7 @@ export default function AssessPage() {
             <div className="card p-6">
               <p className="font-medium text-stone-800">{current.served.stem}</p>
               <div className="mt-4 space-y-2">
-                {current.served.options.map((opt, i) => (
+                {(current.served?.options ?? []).map((opt, i) => (
                   <button key={i} disabled={picked !== null}
                     onClick={() => answer(i)}
                     className={`block w-full rounded-lg border px-4 py-2.5 text-left text-sm transition-colors ${

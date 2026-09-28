@@ -64,16 +64,16 @@ export default function StudentHome() {
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="badge-gray">{o.kind.replace("_", " ")}</span>
-                {!o.match.eligible && <span className="badge-amber">below eligibility bar</span>}
+                <span className="badge-gray">{(o.kind ?? "job").replace("_", " ")}</span>
+                {!o.match?.eligible && <span className="badge-amber">below eligibility bar</span>}
               </div>
               <h3 className="mt-1 font-semibold text-primary-950">{o.title}</h3>
               <div className="text-sm text-stone-500">{o.company} · <MapPin className="mb-0.5 inline h-3.5 w-3.5" /> {o.location} {o.stipend && `· ${o.stipend}`}</div>
             </div>
             <div className="flex items-center gap-3">
               <div className="text-right">
-                <div className={`text-2xl font-bold ${o.match.score >= 60 ? "text-primary-800" : o.match.score >= 35 ? "text-saffron-600" : "text-stone-400"}`}>
-                  {Math.round(o.match.score)}%
+                <div className={`text-2xl font-bold ${(o.match?.score ?? 0) >= 60 ? "text-primary-800" : (o.match?.score ?? 0) >= 35 ? "text-saffron-600" : "text-stone-400"}`}>
+                  {Math.round(o.match?.score ?? 0)}%
                 </div>
                 <div className="text-[10px] uppercase tracking-wide text-stone-400">match</div>
               </div>
@@ -91,9 +91,9 @@ export default function StudentHome() {
           {openId === o.id && (
             <div className="mt-4 rounded-xl border border-stone-100 bg-stone-50 p-4">
               <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-400">
-                Why You Matched - {Math.round(o.match.score)}%
+                Why You Matched - {Math.round(o.match?.score ?? 0)}%
               </div>
-              <MatchExplanation explanation={o.match.explanation} />
+              <MatchExplanation explanation={o.match?.explanation} />
             </div>
           )}
         </div>

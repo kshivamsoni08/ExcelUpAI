@@ -87,7 +87,7 @@ export default function OutcomeLedgerPage() {
 
       {/* Wage curve across all episodes */}
       {(() => {
-        const series = (data?.episodes ?? []).flatMap((e) => e.wage_series);
+        const series = (data?.episodes ?? []).flatMap((e) => e.wage_series ?? []);
         if (!series.length) return null;
         const chart = series.map((w) => ({ m: `M${w.month_index}`, wage: w.monthly_wage }));
         return (
@@ -129,7 +129,7 @@ export default function OutcomeLedgerPage() {
                 {e.monthly_wage_start != null && <> · ₹{e.monthly_wage_start.toLocaleString()}{e.monthly_wage_current && e.monthly_wage_current !== e.monthly_wage_start ? ` → ₹${e.monthly_wage_current.toLocaleString()}` : ""} / month</>}
               </div>
               <div className="mt-2 flex flex-wrap gap-2 text-[11px]">
-                <span className="badge-gray">source: {e.source.replace(/_/g, " ")}</span>
+                <span className="badge-gray">source: {(e.source ?? "self_report").replace(/_/g, " ")}</span>
                 <span className={`badge-${valTone(e.validation_status)}`}>{valLabel(e.validation_status)}</span>
               </div>
             </div>
@@ -202,7 +202,7 @@ function typeIcon(t: string) {
   return { wage: "💼", self_employed: "🧑‍🔧", apprenticeship: "🛠️", higher_study: "🎓", unemployed: "🔍" }[t] ?? "📋";
 }
 function typeLabel(t: string) {
-  return t.replace(/_/g, " ");
+  return (t ?? "episode").replace(/_/g, " ");
 }
 function valTone(s: string) {
   return s === "validated" ? "green" : s === "disputed" ? "amber" : "gray";

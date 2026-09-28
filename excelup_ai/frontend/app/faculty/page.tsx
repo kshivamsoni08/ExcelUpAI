@@ -35,12 +35,12 @@ export default function FacultyPage() {
           <div key={o.id} className="card p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <span className="badge-amber">{o.kind.replace("_", " ")}</span>
+                <span className="badge-amber">{(o.kind ?? "residency").replace("_", " ")}</span>
                 <h3 className="mt-1 font-semibold text-primary-950">{o.title}</h3>
-                <div className="text-sm text-stone-500">{o.company} · {o.location} · {o.duration} {o.stipend && `· ${o.stipend}`}</div>
-                <p className="mt-2 text-sm text-stone-600">{o.description}</p>
+                <div className="text-sm text-stone-500">{o.company} · {o.location ?? "Maharashtra"} · {o.duration} {o.stipend && `· ${o.stipend}`}</div>
+                {o.description && <p className="mt-2 text-sm text-stone-600">{o.description}</p>}
                 <div className="mt-2 flex flex-wrap gap-1">
-                  {o.skills.map((s) => <span key={s} className="badge-gray">{s}</span>)}
+                  {(o.skills ?? []).map((s) => <span key={s} className="badge-gray">{s}</span>)}
                 </div>
               </div>
               <button className="btn-primary" onClick={() => enroll.mutate(o.id)}>Enroll</button>

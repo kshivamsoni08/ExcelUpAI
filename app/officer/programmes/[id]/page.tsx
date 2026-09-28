@@ -54,30 +54,42 @@ export default function ProgrammeDrilldown() {
 
   if (!data) return <div className="text-sm text-stone-400">Loading programme…</div>;
   const p = data;
+  const flags = p.flags ?? [];
+  const decayCurve = p.decay_curve ?? [];
+  const wageCurve = p.wage_curve ?? [];
+  const attritionPareto = p.attrition_pareto ?? [];
+  const demographicsGender = p.demographics?.by_gender ?? [];
+  const demographicsCategory = p.demographics?.by_category ?? [];
+  const topMissing = p.skill_gaps?.top_missing ?? [];
+  const curriculumUpdates = p.skill_gaps?.curriculum_updates ?? [];
+  const cohorts = p.cohorts ?? [];
+  const oqiComponents = p.oqi_components ?? {};
+  const consent = p.consent ?? { completers: 0, consented: 0, wage_consented: 0, coverage_pct: 0, wage_coverage_pct: 0 };
+  const skillGaps = p.skill_gaps ?? { non_placed: 0, completers: 0, top_missing: [], curriculum_updates: [] };
 
   return (
     <div className="space-y-6">
       {/* Header + OQI card */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-primary-950">{p.programme.title}</h1>
+          <h1 className="text-2xl font-bold text-primary-950">{p.programme?.title ?? "Programme"}</h1>
           <p className="text-sm text-stone-500">
-            {p.programme.provider} · {p.programme.sector} · NSQF {p.programme.nsqf_level} · {p.programme.duration_months} months
+            {p.programme?.provider} · {p.programme?.sector} · NSQF {p.programme?.nsqf_level} · {p.programme?.duration_months} months
             · {p.completions} completers
           </p>
-          {p.flags.length > 0 && (
+          {flags.length > 0 && (
             <div className="mt-2 flex gap-2">
-              {p.flags.map((f) => <span key={f} className="badge-amber">⚠ {f.replace(/_/g, " ")}</span>)}
+              {flags.map((f) => <span key={f} className="badge-amber">⚠ {f.replace(/_/g, " ")}</span>)}
             </div>
           )}
         </div>
         <div className="card w-full max-w-sm p-5">
           <div className="text-xs font-semibold uppercase tracking-wide text-stone-400">Outcome-Adjusted Quality Index</div>
-          <div className="mt-1 text-4xl font-extrabold text-primary-800">{Math.round(p.oqi)}</div>
+          <div className="mt-1 text-4xl font-extrabold text-primary-800">{Math.round(p.oqi ?? 0)}</div>
           <div className="mt-2 rounded-lg bg-stone-50 p-2 text-[11px] leading-snug text-stone-600">{p.oqi_formula}</div>
           <div className="mt-2 space-y-1 text-[11px] text-stone-500">
-            <div>placement_12: {p.oqi_components.placement_12} · retention_12: {p.oqi_components.retention_12}</div>
-            <div>wage: {p.oqi_components.wage_component} · validation: {p.oqi_components.validation} · followup: {p.oqi_components.followup}</div>
+            <div>placement_12: {oqiComponents.placement_12 ?? "-"} · retention_12: {oqiComponents.retention_12 ?? "-"}</div>
+            <div>wage: {oqiComponents.wage_component ?? "-"} · validation: {oqiComponents.validation ?? "-"} · followup: {oqiComponents.followup ?? "-"}</div>
           </div>
         </div>
       </div>
@@ -85,8 +97,8 @@ export default function ProgrammeDrilldown() {
       {/* Consent coverage banner */}
       <div className="rounded-xl border border-primary-200 bg-primary-50 px-4 py-3 text-sm text-primary-900">
         <ShieldCheck className="mr-1.5 inline h-4 w-4" />
-        <b>Consent-first analytics:</b> outcomes use {p.consent.consented}/{p.consent.completers} completers ({p.consent.coverage_pct}% coverage)
-        · wage stats: {p.consent.wage_consented}/{p.consent.completers} ({p.consent.wage_coverage_pct}%) · demographic cells with n&lt;5 are suppressed.
+        <b>Consent-first analytics:</b> outcomes use {consent.consented}/{consent.completers} completers ({consent.coverage_pct}% coverage)
+        · wage stats: {consent.wage_consented}/{consent.completers} ({consent.wage_coverage_pct}%) · demographic cells with n&lt;5 are suppressed.
       </div>
 
       {/* KPI row */}
@@ -105,7 +117,7 @@ export default function ProgrammeDrilldown() {
           <h3 className="font-semibold text-primary-950">Placement decay curve</h3>
           <p className="mb-3 text-xs text-stone-500">Share of completers placed at month m after completion.</p>
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={p.decay_curve.map((d) => ({ m: `+${d.m}mo`, pct: Math.round(d.rate * 100) }))}>
+            <LineChart data={decayCurve.map((d) => ({ m: `+${d.m}mo`, pct: Math.round(d.rate * 100) }))}>
               <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
               <XAxis dataKey="m" fontSize={12} />
               <YAxis domain={[0, 100]} fontSize={12} unit="%" />
@@ -118,7 +130,7 @@ export default function ProgrammeDrilldown() {
           <h3 className="font-semibold text-primary-950">Median wage progression</h3>
           <p className="mb-3 text-xs text-stone-500">Wage-consented trainees only (n shown per point).</p>
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={p.wage_curve.map((d) => ({ m: `+${d.m}mo`, inr: d.median ?? 0, n: d.n }))}>
+            <LineChart data={wageCurve.map((d) => ({ m: `+${d.m}mo`, inr: d.median ?? 0, n: d.n }))}>
               <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
               <XAxis dataKey="m" fontSize={12} />
               <YAxis fontSize={12} />
@@ -133,9 +145,9 @@ export default function ProgrammeDrilldown() {
       <div className="grid gap-5 lg:grid-cols-2">
         <div className="card p-5">
           <h3 className="font-semibold text-primary-950">Reasons for non-placement / attrition (Pareto)</h3>
-          {!p.attrition_pareto.length && <div className="text-sm text-stone-400">No reason codes recorded.</div>}
+          {!attritionPareto.length && <div className="text-sm text-stone-400">No reason codes recorded.</div>}
           <ResponsiveContainer width="100%" height={240}>
-            <BarChart data={p.attrition_pareto.map((d) => ({ name: d.label, count: d.count }))} layout="vertical">
+            <BarChart data={attritionPareto.map((d) => ({ name: d.label, count: d.count }))} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
               <XAxis type="number" fontSize={12} allowDecimals={false} />
               <YAxis type="category" dataKey="name" width={150} fontSize={11} />
@@ -148,8 +160,8 @@ export default function ProgrammeDrilldown() {
           <h3 className="font-semibold text-primary-950">Demographic equity (placement at 12 mo)</h3>
           <p className="mb-2 text-xs text-stone-500">Cells with fewer than 5 trainees render as suppressed - privacy by design.</p>
           <div className="space-y-3">
-            <DemoRow title="Gender" cells={p.demographics.by_gender} />
-            <DemoRow title="Social category" cells={p.demographics.by_category} />
+            <DemoRow title="Gender" cells={demographicsGender} />
+            <DemoRow title="Social category" cells={demographicsCategory} />
           </div>
         </div>
       </div>
@@ -159,13 +171,13 @@ export default function ProgrammeDrilldown() {
         <h3 className="font-semibold text-primary-950">Skill-gap diagnostics (non-placed completers)</h3>
         <p className="text-xs text-stone-500">
           The matching engine runs each non-placed trainee against live postings in their districts - near-miss skills are aggregated.
-          {p.skill_gaps.non_placed > 0 && <> <b>{p.skill_gaps.non_placed}</b> non-placed of {p.skill_gaps.completers} completers.</>}
+          {skillGaps.non_placed > 0 && <> <b>{skillGaps.non_placed}</b> non-placed of {skillGaps.completers} completers.</>}
         </p>
-        {!p.skill_gaps.top_missing.length && <div className="mt-2 text-sm text-stone-400">No non-placed completers - every graduate is employed. 🎉</div>}
+        {!topMissing.length && <div className="mt-2 text-sm text-stone-400">No non-placed completers - every graduate is employed. 🎉</div>}
         <div className="mt-3 grid gap-4 lg:grid-cols-2">
           <div>
             <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-400">Top missing proficiencies</div>
-            {p.skill_gaps.top_missing.map((t) => (
+            {topMissing.map((t) => (
               <div key={t.skill} className="mb-1.5 flex items-center justify-between rounded-lg bg-stone-50 px-3 py-2 text-sm">
                 <span className="font-medium text-primary-900">{t.skill}</span>
                 <span className="text-stone-500">{t.trainees_missing} trainees</span>
@@ -174,7 +186,7 @@ export default function ProgrammeDrilldown() {
           </div>
           <div>
             <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-400">Suggested curriculum updates</div>
-            {p.skill_gaps.curriculum_updates.map((t) => (
+            {curriculumUpdates.map((t) => (
               <div key={t.skill} className="mb-1.5 rounded-lg border border-saffron-200 bg-saffron-50 px-3 py-2 text-sm text-stone-700">
                 {t.suggestion}
               </div>
@@ -189,7 +201,7 @@ export default function ProgrammeDrilldown() {
         <p className="mb-3 text-xs text-stone-500">Run an ad-hoc wave: every completer gets an in-app one-tap follow-up instantly.</p>
         {waveMsg && <div className="mb-3 rounded-lg bg-primary-50 px-3 py-2 text-sm text-primary-900">{waveMsg}</div>}
         <div className="space-y-2">
-          {p.cohorts.map((c) => (
+          {cohorts.map((c) => (
             <div key={c.id} className="flex items-center justify-between rounded-lg border border-stone-200 px-3 py-2">
               <div className="text-sm">
                 <b>{c.batch_code}</b> <span className="text-stone-400">· ended {c.end_date ?? "-"}</span>
@@ -219,12 +231,13 @@ function Kpi({ label, value, sub, tone }: { label: string; value: string; sub?: 
   );
 }
 
-function DemoRow({ title, cells }: { title: string; cells: Cell[] }) {
+function DemoRow({ title, cells = [] }: { title: string; cells?: Cell[] }) {
+  const safeCells = cells ?? [];
   return (
     <div>
       <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-stone-400">{title}</div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {cells.map((c) => (
+        {safeCells.map((c) => (
           <div key={c.value} className={`rounded-lg px-3 py-2 text-sm ${c.suppressed ? "bg-stone-100 text-stone-400" : "bg-primary-50 text-primary-900"}`}>
             <div className="font-semibold">{c.value}</div>
             <div className="text-xs">{c.suppressed ? `suppressed (n=${c.n})` : `${Math.round((c.rate ?? 0) * 100)}% placed (n=${c.n})`}</div>

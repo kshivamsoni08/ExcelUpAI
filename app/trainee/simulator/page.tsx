@@ -61,52 +61,56 @@ export default function SimulatorPage() {
         </button>
       </div>
 
-      {res && (
-        <>
-          {!!res.newly_eligible.length && (
-            <div className="card border-primary-300 bg-primary-50 p-4">
-              <div className="flex items-center gap-2 text-primary-900">
-                <TrendingUp className="h-5 w-5" />
-                <b>{res.newly_eligible.length} new role{res.newly_eligible.length > 1 ? "s" : ""} unlocked:</b>
-                <span>{res.newly_eligible.join(" · ")}</span>
+      {res && (() => {
+        const newlyEligible = res.newly_eligible ?? [];
+        const results = res.results ?? [];
+        return (
+          <>
+            {!!newlyEligible.length && (
+              <div className="card border-primary-300 bg-primary-50 p-4">
+                <div className="flex items-center gap-2 text-primary-900">
+                  <TrendingUp className="h-5 w-5" />
+                  <b>{newlyEligible.length} new role{newlyEligible.length > 1 ? "s" : ""} unlocked:</b>
+                  <span>{newlyEligible.join(" · ")}</span>
+                </div>
+              </div>
+            )}
+
+            <div className="card p-5">
+              <h3 className="mb-3 font-semibold text-primary-950">
+                Per-posting impact - average Δ {res.avg_delta > 0 ? "+" : ""}{res.avg_delta}%
+              </h3>
+              <div className="space-y-2">
+                {results.map((r) => (
+                  <div key={r.opp_id} className="rounded-lg border border-stone-100 p-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
+                      <div>
+                        <b>{r.title}</b> <span className="text-stone-400">· {r.company}</span>
+                        {r.eligible_after && !r.eligible_before && <span className="badge-green ml-1">newly eligible</span>}
+                      </div>
+                      <div className="flex items-center gap-2 font-mono text-xs">
+                        <span className="text-stone-400">{r.score_before}%</span>
+                        <span>→</span>
+                        <span className={r.delta > 0 ? "font-bold text-primary-800" : "text-stone-500"}>{r.score_after}%</span>
+                        <span className={`w-14 text-right font-bold ${r.delta > 0 ? "text-primary-700" : "text-stone-400"}`}>
+                          {r.delta > 0 ? "+" : ""}{r.delta}
+                        </span>
+                      </div>
+                    </div>
+                    {/* animated before/after bar */}
+                    <div className="mt-2 h-2 rounded-full bg-stone-100">
+                      <div className="h-2 rounded-full bg-stone-300 transition-all duration-700" style={{ width: `${r.score_before}%` }} />
+                    </div>
+                    <div className="mt-1 h-2 rounded-full bg-stone-100">
+                      <div className="h-2 rounded-full bg-primary-700 transition-all duration-700" style={{ width: `${r.score_after}%` }} />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          )}
-
-          <div className="card p-5">
-            <h3 className="mb-3 font-semibold text-primary-950">
-              Per-posting impact - average Δ {res.avg_delta > 0 ? "+" : ""}{res.avg_delta}%
-            </h3>
-            <div className="space-y-2">
-              {res.results.map((r) => (
-                <div key={r.opp_id} className="rounded-lg border border-stone-100 p-3">
-                  <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
-                    <div>
-                      <b>{r.title}</b> <span className="text-stone-400">· {r.company}</span>
-                      {r.eligible_after && !r.eligible_before && <span className="badge-green ml-1">newly eligible</span>}
-                    </div>
-                    <div className="flex items-center gap-2 font-mono text-xs">
-                      <span className="text-stone-400">{r.score_before}%</span>
-                      <span>→</span>
-                      <span className={r.delta > 0 ? "font-bold text-primary-800" : "text-stone-500"}>{r.score_after}%</span>
-                      <span className={`w-14 text-right font-bold ${r.delta > 0 ? "text-primary-700" : "text-stone-400"}`}>
-                        {r.delta > 0 ? "+" : ""}{r.delta}
-                      </span>
-                    </div>
-                  </div>
-                  {/* animated before/after bar */}
-                  <div className="mt-2 h-2 rounded-full bg-stone-100">
-                    <div className="h-2 rounded-full bg-stone-300 transition-all duration-700" style={{ width: `${r.score_before}%` }} />
-                  </div>
-                  <div className="mt-1 h-2 rounded-full bg-stone-100">
-                    <div className="h-2 rounded-full bg-primary-700 transition-all duration-700" style={{ width: `${r.score_after}%` }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
+          </>
+        );
+      })()}
     </div>
   );
 }

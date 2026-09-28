@@ -100,20 +100,20 @@ export default function LearningPage() {
               <div className="flex items-center gap-2">
                 <Route className="h-4 w-4 text-saffron-500" />
                 <b className="text-primary-950">{r.title}</b>
-                <span className="badge-gray">{r.steps.length} steps</span>
+                <span className="badge-gray">{(r.steps ?? []).length} steps</span>
               </div>
               <div className="mt-3 space-y-0">
-                {r.steps.map((s, i) => (
+                {(r.steps ?? []).map((s, i) => (
                   <div key={s.n} className="flex gap-3">
                     <div className="flex flex-col items-center">
                       <div className={`flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold ${s.kind === "gauntlet" ? "bg-saffron-500 text-white" : "bg-primary-800 text-white"}`}>
                         {s.n}
                       </div>
-                      {i < r.steps.length - 1 && <div className="h-6 w-0.5 bg-stone-200" />}
+                      {i < (r.steps ?? []).length - 1 && <div className="h-6 w-0.5 bg-stone-200" />}
                     </div>
                     <div className="pb-4">
                       <div className="text-sm font-medium text-stone-800">
-                        {s.title} <span className="badge-gray ml-1">{s.kind.replace("_", " ")}</span>
+                        {s.title} <span className="badge-gray ml-1">{(s.kind ?? "").replace("_", " ")}</span>
                       </div>
                       <div className="text-xs text-stone-500">{s.detail}{s.course && ` · ${s.course}`}</div>
                     </div>

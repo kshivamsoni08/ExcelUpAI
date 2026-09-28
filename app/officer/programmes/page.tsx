@@ -98,8 +98,8 @@ export default function ProgrammesPage() {
                 <td className="px-4 py-3 text-right">{pct(r.validation_rate)}</td>
                 <td className="px-4 py-3 text-right font-bold text-primary-800">{Math.round(r.oqi)}</td>
                 <td className="px-4 py-3">
-                  {r.flags.length === 0 && <span className="text-stone-300">-</span>}
-                  {r.flags.map((f) => (
+                  {(r.flags ?? []).length === 0 && <span className="text-stone-300">-</span>}
+                  {(r.flags ?? []).map((f) => (
                     <span key={f} className="badge-amber mr-1 whitespace-nowrap">{f.replace(/_/g, " ")}</span>
                   ))}
                 </td>

@@ -64,7 +64,7 @@ export default function SearchPage() {
           <div key={o.id} className="card flex flex-wrap items-center justify-between gap-3 p-4">
             <div>
               <div className="flex items-center gap-2">
-                <span className="badge-gray">{o.kind.replace("_", " ")}</span>
+                <span className="badge-gray">{(o.kind ?? "job").replace("_", " ")}</span>
                 <b className="text-primary-950">{o.title}</b>
               </div>
               <div className="text-sm text-stone-500">{o.company} · {o.location} {o.stipend && `· ${o.stipend}`}</div>

@@ -12,16 +12,20 @@ export type Explanation = {
   score: number;
 };
 
-export default function MatchExplanation({ explanation }: { explanation: Explanation }) {
+export default function MatchExplanation({ explanation }: { explanation?: Partial<Explanation> }) {
+  if (!explanation) return null;
+  const matched = explanation.matched ?? [];
+  const nearMiss = explanation.near_miss ?? [];
+
   return (
     <div className="space-y-2 text-xs">
-      {explanation.matched.map((m) => (
+      {matched.map((m) => (
         <div key={m.skill} className="flex items-center gap-2 text-stone-600">
           <CheckCircle2 className="h-4 w-4 shrink-0 text-primary-700" />
           <span><b className="text-stone-800">{m.skill}</b> - you at {m.user_level} vs {m.required} required</span>
         </div>
       ))}
-      {explanation.near_miss.map((m) => (
+      {nearMiss.map((m) => (
         <div key={m.skill} className="rounded-lg bg-saffron-50 p-2">
           <div className="flex items-center gap-2 text-stone-700">
             {m.credit > 0 ? <CircleDashed className="h-4 w-4 shrink-0 text-saffron-600" /> :

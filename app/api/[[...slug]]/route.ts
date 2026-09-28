@@ -14,12 +14,18 @@ function getUserFromReq(req: NextRequest): SessionUser {
   if (token && token.startsWith("user_")) {
     const email = Buffer.from(token.replace("user_", ""), "base64").toString("utf-8");
     if (DEMO_USERS[email]) return DEMO_USERS[email].user;
+    const low = email.toLowerCase();
+    for (const [k, v] of Object.entries(DEMO_USERS)) {
+      if (k.toLowerCase() === low) return v.user;
+    }
   }
-  // Default fallback user is Priya (Trainee) or Sunita if officer path
+  // Default fallback user is Priya (Trainee) or appropriate role by path
   const url = req.nextUrl.pathname;
   if (url.includes("/officer")) return DEMO_USERS["sunita.rao@skills.mahdemo.gov"].user;
-  if (url.includes("/employer")) return DEMO_USERS["hr@sunray.demo"].user;
+  if (url.includes("/employer") || url.includes("/company")) return DEMO_USERS["hr@sunray.demo"].user;
   if (url.includes("/provider")) return DEMO_USERS["principal@itipune.demo"].user;
+  if (url.includes("/faculty")) return DEMO_USERS["trainer@demo.faculty"].user;
+  if (url.includes("/admin")) return DEMO_USERS["admin@excelupai.demo"].user;
   return DEMO_USERS["priya.patil@demo.trainee"].user;
 }
 
@@ -69,15 +75,15 @@ export async function GET(
   if (path === "officer/districts") {
     return NextResponse.json({
       cells: [
-        { district: "Pune", sector: "Solar & Renewables", oqi: 92.9, episodes: 47 },
-        { district: "Nashik", sector: "Auto & EV", oqi: 59.4, episodes: 85 },
-        { district: "Kolhapur", sector: "Manufacturing", oqi: 53.6, episodes: 111 },
-        { district: "Solapur", sector: "Textiles", oqi: 25.6, episodes: 220 },
-        { district: "Sambhajinagar", sector: "Manufacturing", oqi: 40.6, episodes: 86 },
-        { district: "Mumbai Suburban", sector: "IT-ITeS", oqi: 55.5, episodes: 82 },
-        { district: "Thane", sector: "Textiles", oqi: 34.1, episodes: 75 },
-        { district: "Nagpur", sector: "Electrical", oqi: 51.4, episodes: 133 },
-        { district: "Raigad", sector: "Retail", oqi: 51.6, episodes: 77 },
+        { district: "Pune", sector: "Solar & Renewables", oqi: 92.9, episodes: 47, active: 44 },
+        { district: "Nashik", sector: "Auto & EV", oqi: 59.4, episodes: 85, active: 51 },
+        { district: "Kolhapur", sector: "Manufacturing", oqi: 53.6, episodes: 111, active: 60 },
+        { district: "Solapur", sector: "Textiles", oqi: 25.6, episodes: 220, active: 56 },
+        { district: "Sambhajinagar", sector: "Manufacturing", oqi: 40.6, episodes: 86, active: 35 },
+        { district: "Mumbai Suburban", sector: "IT-ITeS", oqi: 55.5, episodes: 82, active: 46 },
+        { district: "Thane", sector: "Textiles", oqi: 34.1, episodes: 75, active: 26 },
+        { district: "Nagpur", sector: "Electrical", oqi: 51.4, episodes: 133, active: 68 },
+        { district: "Raigad", sector: "Retail", oqi: 51.6, episodes: 77, active: 40 },
       ],
       note: "Districts with n < 5 suppressed per k-anonymity protocol.",
     });
@@ -473,8 +479,28 @@ export async function GET(
   // --- FACULTY ---
   if (path === "faculty/opportunities") {
     return NextResponse.json([
-      { id: 1, title: "Solar & Clean Tech Industry Exposure", company: "SunRay Energy", stipend: "Sponsored", duration: "2 weeks" },
-      { id: 2, title: "EV Powertrain Faculty Fellowship", company: "EV Motors", stipend: "Sponsored", duration: "3 weeks" },
+      {
+        id: 1,
+        kind: "industry_residency",
+        title: "Solar & Clean Tech Industry Exposure",
+        company: "SunRay Energy",
+        location: "Pune, Maharashtra",
+        stipend: "Sponsored (₹25,000 allowance)",
+        duration: "2 weeks",
+        description: "Hands-on immersion in grid-tied solar microgrid installations, commercial inverter commissioning, and rooftop safety compliance.",
+        skills: ["Solar PV Installation", "Solar Inverter Basics", "Microgrid Architecture"],
+      },
+      {
+        id: 2,
+        kind: "faculty_fellowship",
+        title: "EV Powertrain & BMS Faculty Fellowship",
+        company: "EV Motors Maharashtra",
+        location: "Nashik, Maharashtra",
+        stipend: "Sponsored (₹30,000 allowance)",
+        duration: "3 weeks",
+        description: "Intensive industrial residency working directly on EV battery pack assembly, high-voltage safety isolation, and CAN-bus telemetry.",
+        skills: ["Battery Diagnostics", "EV Powertrain", "BMS Calibration"],
+      },
     ]);
   }
 
@@ -700,6 +726,10 @@ export async function POST(
       id: store.submissions.length + 1,
       opp_id: gid,
       title: gid === 1 ? "Solar PV Site Safety Challenge" : "EV Battery Diagnostics Challenge",
+      gauntlet_title: gid === 1 ? "Solar PV Site Safety Challenge" : "EV Battery Diagnostics Challenge",
+      company: gid === 1 ? "SunRay Energy" : "EV Motors Maharashtra",
+      candidate_ref: `TRN-${String(user.id).padStart(5, "0")}`,
+      candidate_user_id: user.id,
       status: "submitted",
       submission_url: body.submission_url,
       writeup: body.writeup,
@@ -707,6 +737,21 @@ export async function POST(
     };
     store.submissions.unshift(sub);
     return NextResponse.json(sub);
+  }
+
+  // --- POST OPPORTUNITIES (Posting Builder) ---
+  if (path === "opportunities") {
+    const newId = Math.floor(Math.random() * 900) + 200;
+    return NextResponse.json({
+      success: true,
+      id: newId,
+      ...body,
+    });
+  }
+
+  // --- FACULTY ENROLLMENT ---
+  if (slug[0] === "faculty" && slug[1] === "opportunities" && slug[2] && slug[3] === "enroll") {
+    return NextResponse.json({ success: true, enrolled_id: Number(slug[2]) });
   }
 
   // --- COMPANY ACTIONS ---
@@ -847,10 +892,18 @@ export async function POST(
 
   // --- RESUME SCAN ---
   if (path === "resume/scan") {
+    const extracted = [
+      { skill_id: 1, name: "Solar PV Installation", level: 4 },
+      { skill_id: 2, name: "Solar Site Survey", level: 3.5 },
+      { skill_id: 3, name: "Electrical Earthing", level: 3 },
+      { skill_id: 4, name: "Teamwork & Safety Protocols", level: 4 },
+    ];
     return NextResponse.json({
-      extracted_skills: ["Solar PV Installation", "Solar Site Survey", "Electrical Earthing", "Teamwork"],
-      declared_ids: [15, 16, 22],
-      match_summary: "High fit for Solar & Clean Tech trades.",
+      added: extracted,
+      path: "regex_llm_hybrid",
+      extracted_skills: extracted.map((s) => s.name),
+      declared_ids: [1, 2, 3, 4],
+      match_summary: "High fit for Solar & Clean Tech trades (4 skills extracted).",
     });
   }
 

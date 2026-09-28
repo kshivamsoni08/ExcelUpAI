@@ -36,12 +36,13 @@ const SOURCE_LABEL: Record<string, string> = {
 };
 
 export default function SkillGenome({
-  skills,
+  skills: rawSkills = [],
   compact = false,
 }: {
-  skills: GenomeSkill[];
+  skills?: GenomeSkill[];
   compact?: boolean;
 }) {
+  const skills = rawSkills ?? [];
   const [hover, setHover] = useState<{
     skill: GenomeSkill;
     x: number;

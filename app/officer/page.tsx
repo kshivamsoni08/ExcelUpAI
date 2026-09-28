@@ -58,8 +58,8 @@ export default function OfficerDashboard() {
         </div>
         <span className="badge-green ml-auto">
           <ShieldCheck className="mr-1 inline h-3.5 w-3.5" />
-          Consent coverage {dash
-            ? Math.round((100 * dash.consent_coverage.consented) / Math.max(dash.consent_coverage.trainees, 1))
+          Consent coverage {dash?.consent_coverage
+            ? Math.round((100 * (dash.consent_coverage.consented ?? 0)) / Math.max(dash.consent_coverage.trainees ?? 1, 1))
             : "-"}%
         </span>
       </div>
@@ -118,7 +118,7 @@ export default function OfficerDashboard() {
           {dash?.flagged_programmes?.map((f) => (
             <Link key={f.programme_id} href={`/officer/programmes/${f.programme_id}`}
               className="badge-amber cursor-pointer">
-              {f.title}: {f.flags.join(", ").replace(/_/g, " ")}
+              {f.title}: {(f.flags ?? []).join(", ").replace(/_/g, " ")}
             </Link>
           ))}
         </div>
@@ -134,7 +134,7 @@ export default function OfficerDashboard() {
           </Link>
         </div>
         <ResponsiveContainer width="100%" height={260}>
-          <BarChart data={top.map((r) => ({ name: r.title.length > 26 ? r.title.slice(0, 24) + "…" : r.title, OQI: Math.round(r.oqi), Day0: Math.round(r.placement_0 * 100) }))}>
+          <BarChart data={top.map((r) => ({ name: (r.title ?? "Programme").length > 26 ? (r.title ?? "Programme").slice(0, 24) + "…" : (r.title ?? "Programme"), OQI: Math.round(r.oqi ?? 0), Day0: Math.round((r.placement_0 ?? 0) * 100) }))}>
             <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
             <XAxis dataKey="name" fontSize={10} interval={0} angle={-18} textAnchor="end" height={60} />
             <YAxis fontSize={12} />

@@ -68,7 +68,7 @@ export default function ChallengesPage() {
             {g.rubric?.criteria && (
               <div className="mt-3 rounded-lg bg-stone-50 p-3 text-xs text-stone-600">
                 <b>Rubric:</b>{" "}
-                {g.rubric.criteria.map((c: any) => `${c.name} (${Math.round(c.weight * 100)}%)`).join(" · ")}
+                {(g.rubric?.criteria ?? []).map((c: any) => `${c.name} (${Math.round((c.weight ?? 0.5) * 100)}%)`).join(" · ")}
               </div>
             )}
 

@@ -29,7 +29,7 @@ export default function DistrictsPage() {
   const sectors = [...new Set(cells.map((c) => c.sector))].sort();
   const at = (d: string, s: string) => cells.find((c) => c.district === d && c.sector === s);
   const intensity = (c?: Cell) =>
-    !c || c.episodes === 0 ? 0 : Math.min(1, c.active / c.episodes);
+    !c || !c.episodes || !c.active ? 0 : Math.min(1, c.active / c.episodes);
 
   return (
     <div className="space-y-5">
@@ -68,7 +68,7 @@ export default function DistrictsPage() {
                         }}
                         title={c ? `${c.district} x ${c.sector}: ${c.active}/${c.episodes} active` : "no episodes"}
                       >
-                        {c ? `${c.active}/${c.episodes}` : "·"}
+                        {c ? `${c.active ?? 0}/${c.episodes}` : "·"}
                       </div>
                     </td>
                   );
@@ -90,13 +90,13 @@ export default function DistrictsPage() {
           <div>
             <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-400">Gender</div>
             <div className="grid grid-cols-3 gap-2">
-              {demo?.by_gender.map((c) => <DemoCell key={c.value} c={c} />)}
+              {(demo?.by_gender ?? []).map((c) => <DemoCell key={c.value} c={c} />)}
             </div>
           </div>
           <div>
             <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-400">Social category</div>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {demo?.by_category.map((c) => <DemoCell key={c.value} c={c} />)}
+              {(demo?.by_category ?? []).map((c) => <DemoCell key={c.value} c={c} />)}
             </div>
           </div>
         </div>
