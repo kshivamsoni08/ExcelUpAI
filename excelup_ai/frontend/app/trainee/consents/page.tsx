@@ -45,13 +45,15 @@ export default function ConsentsPage() {
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center gap-3">
-        <Shield className="h-7 w-7 text-primary-800" />
-        <div>
-          <h1 className="text-2xl font-bold text-primary-950">Consent Manager</h1>
-          <p className="text-sm text-stone-500">You choose what feeds the numbers. Revoking a scope removes you from those statistics on the next refresh - live.</p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="flex items-center gap-3">
+          <Shield className="h-7 w-7 shrink-0 text-primary-800" />
+          <div>
+            <h1 className="text-2xl font-bold text-primary-950">Consent Manager</h1>
+            <p className="text-sm text-stone-500">You choose what feeds the numbers. Revoking a scope removes you from those statistics on the next refresh - live.</p>
+          </div>
         </div>
-        <button className="btn-primary ml-auto" onClick={() => setGranting(true)}>+ Grant consent</button>
+        <button className="btn-primary shrink-0 self-start sm:ml-auto sm:self-auto" onClick={() => setGranting(true)}>+ Grant consent</button>
       </div>
 
       <div className="rounded-xl border border-primary-200 bg-primary-50 px-4 py-3 text-sm text-primary-900">

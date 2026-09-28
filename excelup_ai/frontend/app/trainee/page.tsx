@@ -45,16 +45,18 @@ export default function StudentHome() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-4">
-      <div className="flex items-center justify-between">
-        <div>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
           <h1 className="text-2xl font-bold tracking-tight text-primary-950">Recommended for you</h1>
           <p className="text-sm text-stone-500">Ranked by your verified skill match - auto-refreshing.</p>
         </div>
-        <select className="input w-44" value={kind} onChange={(e) => setKind(e.target.value)}>
-          {KINDS.map((k) => (
-            <option key={k} value={k}>{k ? k.replace("_", " ") : "All kinds"}</option>
-          ))}
-        </select>
+        <div className="w-full sm:w-48 shrink-0">
+          <select className="input" value={kind} onChange={(e) => setKind(e.target.value)}>
+            {KINDS.map((k) => (
+              <option key={k} value={k}>{k ? k.replace("_", " ") : "All kinds"}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {isLoading && <div className="card p-8 text-center text-stone-400">Loading your matches…</div>}

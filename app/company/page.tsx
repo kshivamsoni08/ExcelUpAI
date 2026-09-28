@@ -53,14 +53,14 @@ export default function CompanyHome() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-5">
-      <div className="flex items-center justify-between">
-        <div>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
           <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight text-primary-950">
             <Building2 className="h-6 w-6" /> Postings &amp; Blind Pipeline
           </h1>
           <p className="text-sm text-stone-500">Skills first. Names later - shortlisting reveals identity.</p>
         </div>
-        <a className="btn-primary" href="/company/post">+ New posting</a>
+        <a className="btn-primary shrink-0 self-start sm:self-auto" href="/company/post">+ New posting</a>
       </div>
 
       <div className="card p-4">
