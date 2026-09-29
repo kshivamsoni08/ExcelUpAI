@@ -4,9 +4,9 @@ import Providers from "./providers";
 import PwaRegister from "@/components/PwaRegister";
 
 export const metadata: Metadata = {
-  title: "ExcelUp AI - Skilling outcomes, measured honestly.",
+  title: "EXCELUP AI - Skilling outcomes, measured honestly.",
   description:
-    "Longitudinal skilling-outcomes and impact-measurement platform: consent-based outcome registry, one-tap follow-ups, employer validation, outcome-adjusted quality analytics.",
+    "Longitudinal skilling-outcomes and impact-measurement platform by EXCELUP AI: consent-based outcome registry, one-tap follow-ups, employer validation, outcome-adjusted quality analytics.",
   manifest: "/manifest.webmanifest",
   icons: { icon: "/logo.png", apple: "/logo.png" },
 };

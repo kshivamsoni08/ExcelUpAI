@@ -4,7 +4,7 @@ export async function GET() {
   const res = NextResponse.json({
     ok: true,
     status: "online",
-    name: "ExcelUp AI Next.js Full-Stack API",
+    name: "EXCELUP AI Next.js Full-Stack API",
     platform: "Vercel / Next.js App Router",
     tagline: "Skilling outcomes, measured honestly.",
   });

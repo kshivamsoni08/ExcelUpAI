@@ -16,7 +16,7 @@ type NavItem = { href: string; label: string; icon: React.ComponentType<{ classN
 
 const NAVS: Record<SessionUser["role"], { brand: string; items: NavItem[] }> = {
   trainee: {
-    brand: "ExcelUp AI",
+    brand: "EXCELUP AI",
     items: [
       { href: "/trainee", label: "Home & Feed", icon: Home },
       { href: "/trainee/outcomes", label: "My Outcome Ledger", icon: ClipboardCheck },
@@ -34,14 +34,14 @@ const NAVS: Record<SessionUser["role"], { brand: string; items: NavItem[] }> = {
   },
   // Dormant per delta-spec (kept for old accounts, hidden until used again)
   trainer: {
-    brand: "ExcelUp AI",
+    brand: "EXCELUP AI",
     items: [
       { href: "/faculty", label: "Industry Residency", icon: FlaskConical },
       { href: "/faculty/learning", label: "Courses", icon: BookOpen },
     ],
   },
   employer: {
-    brand: "ExcelUp AI for Employers",
+    brand: "EXCELUP AI for Employers",
     items: [
       { href: "/employer/validations", label: "Validation Queue", icon: ClipboardCheck },
       { href: "/company", label: "Postings & Pipeline", icon: Building2 },
@@ -50,7 +50,7 @@ const NAVS: Record<SessionUser["role"], { brand: string; items: NavItem[] }> = {
     ],
   },
   provider: {
-    brand: "ExcelUp AI for Providers",
+    brand: "EXCELUP AI for Providers",
     items: [
       { href: "/provider", label: "Outcome Dashboard", icon: BarChart3 },
       { href: "/provider/pri", label: "Job-Readiness Index", icon: GraduationCap },
@@ -58,7 +58,7 @@ const NAVS: Record<SessionUser["role"], { brand: string; items: NavItem[] }> = {
     ],
   },
   officer: {
-    brand: "ExcelUp AI · Dept of Skills",
+    brand: "EXCELUP AI · Dept of Skills",
     items: [
       { href: "/officer", label: "Impact Dashboard", icon: Landmark },
       { href: "/officer/programmes", label: "Programmes", icon: BarChart3 },
@@ -68,7 +68,7 @@ const NAVS: Record<SessionUser["role"], { brand: string; items: NavItem[] }> = {
     ],
   },
   admin: {
-    brand: "ExcelUp AI Admin",
+    brand: "EXCELUP AI Admin",
     items: [{ href: "/admin", label: "Platform Stats", icon: Shield }],
   },
 };
@@ -147,8 +147,8 @@ export default function Shell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen">
       <aside className="fixed inset-y-0 left-0 w-60 border-r border-stone-200 bg-white">
         <div className="flex h-14 items-center gap-2.5 border-b border-stone-100 px-5">
-          <img src="/logo.png" alt="ExcelUp AI" className="h-7 w-7 object-contain" />
-          <span className="font-semibold tracking-tight text-primary-950">{nav.brand}</span>
+          <img src="/logo.png" alt="EXCELUP AI" className="h-7 w-7 object-contain" />
+          <span className="font-bold tracking-tight text-primary-950">{nav.brand}</span>
         </div>
         <nav className="space-y-0.5 p-3">
           {nav.items.map((item) => {

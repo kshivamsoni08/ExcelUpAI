@@ -29,8 +29,8 @@ export default function VerifyPage() {
     <div className="flex min-h-screen items-center justify-center bg-stone-100 p-6">
       <div className="w-full max-w-xl">
         <div className="mb-4 flex items-center gap-2.5">
-          <img src="/logo.png" alt="ExcelUp AI" className="h-8 w-8 object-contain" />
-          <span className="text-lg font-bold text-primary-950">ExcelUp AI Credential Verification</span>
+          <img src="/logo.png" alt="EXCELUP AI" className="h-8 w-8 object-contain" />
+          <span className="text-lg font-bold text-primary-950">EXCELUP AI Credential Verification</span>
         </div>
 
         {isLoading && <div className="card p-10 text-center text-stone-400">Verifying…</div>}

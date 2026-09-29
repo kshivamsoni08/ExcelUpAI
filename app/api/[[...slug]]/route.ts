@@ -60,7 +60,7 @@ export async function GET(
     return NextResponse.json({
       ok: true,
       status: "online",
-      name: "ExcelUp AI Next.js Full-Stack API",
+      name: "EXCELUP AI Next.js Full-Stack API",
       platform: "Vercel / Next.js App Router",
       tagline: "Skilling outcomes, measured honestly.",
     });
@@ -754,7 +754,7 @@ export async function POST(
       id: store.enrollments.length + 1,
       course_id: courseId,
       title: course ? course.title : `Enrolled Course #${courseId}`,
-      provider: course ? course.provider : "ExcelUp AI Academy",
+      provider: course ? course.provider : "EXCELUP AI Academy",
       url: course ? course.url : "https://excelupai.demo/courses",
       progress: 0,
       status: "active",

@@ -45,7 +45,7 @@ export default function ApplicationsPage() {
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <b className="text-primary-950">{a.opportunity?.title ?? a.title ?? `Posting #${a.opp_id ?? a.id}`}</b>
-                <div className="text-sm text-stone-500">{a.opportunity?.company ?? a.company ?? "ExcelUp Partner"}{a.opportunity?.location ? ` · ${a.opportunity.location}` : ""}</div>
+                <div className="text-sm text-stone-500">{a.opportunity?.company ?? a.company ?? "EXCELUP AI Partner"}{a.opportunity?.location ? ` · ${a.opportunity.location}` : ""}</div>
               </div>
               <div className="flex items-center gap-2">
                 <span className={`badge ${a.status === "rejected" ? "badge-red" : stageIdx(a.status) >= 4 ? "badge-green" : "badge-amber"}`}>

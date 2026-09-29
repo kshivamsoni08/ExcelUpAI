@@ -34,15 +34,15 @@ export default function Landing() {
     <div className="min-h-screen bg-white">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <div className="flex items-center gap-2.5">
-          <img src="/logo.png" alt="ExcelUp AI" className="h-8 w-8 object-contain" />
-          <span className="text-lg font-bold tracking-tight text-primary-950">ExcelUp AI</span>
+          <img src="/logo.png" alt="EXCELUP AI" className="h-8 w-8 object-contain" />
+          <span className="text-lg font-bold tracking-tight text-primary-950">EXCELUP AI</span>
         </div>
         <Link href="/login" className="btn-primary">Sign in</Link>
       </header>
 
       <section className="mx-auto max-w-6xl px-6 pb-16 pt-10 text-center">
         <div className="mb-6 flex justify-center">
-          <img src="/logo-full.png" alt="ExcelUp AI" className="h-28 sm:h-36 object-contain" />
+          <img src="/logo-full.png" alt="EXCELUP AI" className="h-28 sm:h-36 object-contain" />
         </div>
         <div className="badge-amber mx-auto mb-5">Smart India Hackathon · PS 26135 · Govt. of Maharashtra, Dept of Skills</div>
         <h1 className="mx-auto max-w-3xl text-5xl font-extrabold leading-tight tracking-tight text-primary-950">
@@ -51,7 +51,7 @@ export default function Landing() {
           <span className="text-saffron-500">measured honestly.</span>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-stone-600">
-          Enrolment and certificates are not outcomes. ExcelUp AI builds a{" "}
+          Enrolment and certificates are not outcomes. <b className="font-bold">EXCELUP AI</b> builds a{" "}
           <b>consent-based longitudinal outcome registry</b> - employment episodes,
           wage progression, retention and reasons for non-placement, captured with
           one-tap follow-ups, employer validation and platform placements.
@@ -85,7 +85,7 @@ export default function Landing() {
       </section>
 
       <footer className="mx-auto max-w-6xl px-6 py-10 text-center text-xs text-stone-400">
-        ExcelUp AI - Longitudinal Skilling Outcomes &amp; Impact Measurement · Dept of Skills, Employment, Entrepreneurship &amp; Innovation (demo)
+        <b className="font-bold">EXCELUP AI</b> - Longitudinal Skilling Outcomes &amp; Impact Measurement · Dept of Skills, Employment, Entrepreneurship &amp; Innovation (demo)
       </footer>
     </div>
   );
