@@ -40,7 +40,10 @@ export default function Landing() {
         <Link href="/login" className="btn-primary">Sign in</Link>
       </header>
 
-      <section className="mx-auto max-w-6xl px-6 pb-16 pt-14 text-center">
+      <section className="mx-auto max-w-6xl px-6 pb-16 pt-10 text-center">
+        <div className="mb-6 flex justify-center">
+          <img src="/logo-full.png" alt="ExcelUp AI" className="h-28 sm:h-36 object-contain" />
+        </div>
         <div className="badge-amber mx-auto mb-5">Smart India Hackathon · PS 26135 · Govt. of Maharashtra, Dept of Skills</div>
         <h1 className="mx-auto max-w-3xl text-5xl font-extrabold leading-tight tracking-tight text-primary-950">
           Skilling outcomes,

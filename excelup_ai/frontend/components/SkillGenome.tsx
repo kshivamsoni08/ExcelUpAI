@@ -42,7 +42,7 @@ export default function SkillGenome({
   skills?: GenomeSkill[];
   compact?: boolean;
 }) {
-  const skills = rawSkills ?? [];
+  const skills = useMemo(() => rawSkills ?? [], [rawSkills]);
   const [hover, setHover] = useState<{
     skill: GenomeSkill;
     x: number;

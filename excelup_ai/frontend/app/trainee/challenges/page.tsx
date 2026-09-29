@@ -40,10 +40,10 @@ export default function ChallengesPage() {
         <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight text-primary-950">
           <Trophy className="h-6 w-6 text-saffron-500" /> Industry Skill Challenges
         </h1>
-        <p className="text-sm text-stone-500">Don't tell us you can do it. Show us. Approved challenges mint a company-verified certificate.</p>
+        <p className="text-sm text-stone-500">Don&apos;t tell us you can do it. Show us. Approved challenges mint a company-verified certificate.</p>
       </div>
 
-      {done && <div className="card border-primary-200 bg-primary-50 p-3 text-sm text-primary-900">Submitted! The company reviews it in their queue - you'll get a notification.</div>}
+      {done && <div className="card border-primary-200 bg-primary-50 p-3 text-sm text-primary-900">Submitted! The company reviews it in their queue - you&apos;ll get a notification.</div>}
 
       <div className="grid gap-4">
         {(gauntlets ?? []).map((g) => (

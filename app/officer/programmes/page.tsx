@@ -112,7 +112,7 @@ export default function ProgrammesPage() {
       <div className="grid gap-4 md:grid-cols-2">
         <div className="card p-4 text-xs text-stone-600">
           <b className="text-primary-950">OQI formula (published):</b> {data?.oqi_formula}
-          <div className="mt-1 text-stone-400">Wage stats show n = trainees with 'wage' consent scope. Coverage never assumed.</div>
+          <div className="mt-1 text-stone-400">Wage stats show n = trainees with &apos;wage&apos; consent scope. Coverage never assumed.</div>
         </div>
         <div className="card p-4 text-xs text-stone-600">
           <b className="text-primary-950">Flag legend:</b>

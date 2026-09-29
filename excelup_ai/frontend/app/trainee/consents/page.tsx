@@ -57,7 +57,7 @@ export default function ConsentsPage() {
       </div>
 
       <div className="rounded-xl border border-primary-200 bg-primary-50 px-4 py-3 text-sm text-primary-900">
-        <b>Why consent matters here:</b> every officer/provider statistic shows its coverage ("n" and %). Analytics never show your name. Officers viewing your personal data get permanently logged in the PII audit trail.
+        <b>Why consent matters here:</b> every officer/provider statistic shows its coverage (&quot;n&quot; and %). Analytics never show your name. Officers viewing your personal data get permanently logged in the PII audit trail.
       </div>
 
       <div className="space-y-3">

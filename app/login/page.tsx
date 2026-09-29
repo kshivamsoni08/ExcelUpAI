@@ -52,8 +52,8 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#1E3A8A] via-[#1E3A8A]/90 to-[#312E81] p-6">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">
-        <div className="mb-6 flex items-center gap-3">
-          <img src="/logo.png" alt="ExcelUp AI" className="h-9 w-9 object-contain" />
+        <div className="mb-6 flex items-center gap-3.5">
+          <img src="/logo.png" alt="ExcelUp AI" className="h-11 w-11 object-contain" />
           <div>
             <h1 className="text-xl font-bold tracking-tight text-primary-950">ExcelUp AI</h1>
             <p className="text-xs text-stone-500">Skilling outcomes, measured honestly.</p>

@@ -51,7 +51,7 @@ export default function ResumePage() {
         <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight text-primary-950">
           <FileScan className="h-6 w-6" /> Resume Scanner
         </h1>
-        <p className="text-sm text-stone-500">We don't just read your resume - we check if it's true.</p>
+        <p className="text-sm text-stone-500">We don&apos;t just read your resume - we check if it&apos;s true.</p>
       </div>
 
       <div className="card space-y-4 p-6">
